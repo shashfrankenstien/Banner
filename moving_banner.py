@@ -14,10 +14,9 @@ def convert(message):
 		output.append(outputTemp)
 	return output
 
-def moving_banner(out):
+def moving_banner(out, speed=0.1):
 	os.system('clear')
 	length = 100
-	speed = 0.05
 	start = [(i+1) for i in list(reversed(range(length)))]
 	exit = [(i+1) for i in list(reversed(range(len(out[0]))))]
 	for offset in start:
@@ -36,7 +35,7 @@ def moving_banner(out):
 if __name__=='__main__':
 	output = convert(message)
 	while True:
-		moving_banner(output)
+		moving_banner(output, speed=0.05)
 
 
 
