@@ -1,8 +1,7 @@
 import os, time
 from alphabet import alphabet
 
-message = raw_input("Enter something - ")
-message = message.upper()
+
 
 def convert(message):
 	output = []
@@ -16,26 +15,38 @@ def convert(message):
 
 def moving_banner(out, speed=0.1):
 	os.system('clear')
-	length = 100
+	length = 40
 	start = [(i+1) for i in list(reversed(range(length)))]
 	exit = [(i+1) for i in list(reversed(range(len(out[0]))))]
-	for offset in start:
-		os.system('clear')
-		for row in range(7):
-			print (" "*offset+out[row])[:length]
-		time.sleep(speed)
-	for red in exit:
-		os.system('clear')
-		for row in range(7):
-			print out[row][-red:length]
-		time.sleep(speed)
 
+	prefix = " "*length
+	for offset in range(length+len(out[0])):
+		os.system('clear')
+
+		print "_"*(length+4)
+		print '|', " "*length, '|'
+
+		for row in range(7):
+			printString= (prefix+out[row])[offset:][:length]
+			if len(printString) < length:
+				printString = printString+(" "*(length-len(printString)))
+			print '|', printString, '|'
+
+		print "o"*(length+4)
+
+		print '\nPress Ctl+C to exit!'
+		time.sleep(speed)
 
 
 if __name__=='__main__':
+	os.system('clear')
+	message = raw_input("Enter something - ")
+	message = message.upper()
 	output = convert(message)
 	while True:
-		moving_banner(output, speed=0.05)
+		try:
+			moving_banner(output, speed=0.02)
+		except: break
 
 
 
