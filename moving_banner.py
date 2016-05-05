@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import os, time
 from alphabet import alphabet
 
@@ -13,9 +15,8 @@ def convert(message):
 		output.append(outputTemp)
 	return output
 
-def moving_banner(out, speed=0.1):
+def moving_banner(out, speed=0.1, length=50):
 	os.system('clear')
-	length = 40
 	start = [(i+1) for i in list(reversed(range(length)))]
 	exit = [(i+1) for i in list(reversed(range(len(out[0]))))]
 
