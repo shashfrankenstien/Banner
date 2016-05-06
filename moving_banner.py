@@ -17,8 +17,8 @@ def convert(message):
 
 def moving_banner(out, speed=0.1, length=50):
 	os.system('clear')
-	start = [(i+1) for i in list(reversed(range(length)))]
-	exit = [(i+1) for i in list(reversed(range(len(out[0]))))]
+	# start = [(i+1) for i in list(reversed(range(length)))]
+	# exit = [(i+1) for i in list(reversed(range(len(out[0]))))]
 
 	prefix = " "*length
 	for offset in range(length+len(out[0])):
@@ -42,11 +42,12 @@ def moving_banner(out, speed=0.1, length=50):
 if __name__=='__main__':
 	os.system('clear')
 	message = raw_input("Enter something - ")
+	length = raw_input("Enter screen width(20-177) - ")
 	message = message.upper()
 	output = convert(message)
 	while True:
 		try:
-			moving_banner(output, speed=0.02)
+			moving_banner(output, speed=0.02, length=int(length))
 		except: break
 
 
