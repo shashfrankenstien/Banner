@@ -2,7 +2,7 @@
 
 import os, time
 from alphabet import alphabet
-
+import sys
 
 
 def convert(message):
@@ -41,8 +41,11 @@ def moving_banner(out, speed=0.1, length=50):
 
 if __name__=='__main__':
 	os.system('clear')
+	try:
+		length = sys.argv[1]
+	except: length = 50
 	message = raw_input("Enter something - ")
-	length = raw_input("Enter screen width(20-177) - ")
+	#length = raw_input("Enter screen width(20-177) - ")
 	message = message.upper()
 	output = convert(message)
 	while True:
