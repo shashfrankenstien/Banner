@@ -1,2 +1,4 @@
-AnimBanner.py
+__pycache__
 *.pyc
+
+AnimBanner.py
