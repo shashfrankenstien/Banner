@@ -8,9 +8,13 @@ import argparse
 
 TERM_WIDTH, _ = os.get_terminal_size()
 
-parser = argparse.ArgumentParser("python {}".format(os.path.basename(__file__)), formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser = argparse.ArgumentParser(
+	"Banner",
+	usage="python {} [options] <message>".format(os.path.basename(__file__)),
+	formatter_class=argparse.ArgumentDefaultsHelpFormatter
+)
 
-parser.add_argument("message", help="message to print as banner", type=str, nargs='?', default=None)
+parser.add_argument("message", help="message to print as banner", type=str, default=None)
 parser.add_argument("--figlet", "-f", help="select figlet font name", type=str, default="banner")
 parser.add_argument("--figlet-list", "-fl", help="list available figlet fonts", action="store_true")
 parser.add_argument("-x", help="horizontal wall character", type=str, default='_')
