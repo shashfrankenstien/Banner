@@ -1,72 +1,76 @@
 #!/usr/bin/python
 
+__version__ = "2.0.0"
+
 import os, time
-from alphabet import alphabet
-import sys
+from alphabet import alphabet, alphabet_char
+import argparse
 
+TERM_WIDTH, _ = os.get_terminal_size()
 
-def convert(message):
+parser = argparse.ArgumentParser("python {}".format(os.path.basename(__file__)))
+parser.add_argument("message", help="message to print as banner")
+parser.add_argument("-c", help="character used for banner text", type=str, default=alphabet_char)
+parser.add_argument("-x", help="horizontal wall character", type=str, default='_')
+parser.add_argument("-y", help="vertical wall character", type=str, default='|')
+parser.add_argument("--width", "-w", help="width of the banner", type=int, default=TERM_WIDTH)
+parser.add_argument("--speed", "-s", help="speed of the banner", type=int, default=50)
+parser.add_argument("--quiet", "-q", help="don't print extra text", action="store_true")
+
+def clear_scr():
+	os.system('cls' if os.name == 'nt' else 'clear')
+
+def convert(message, replace_char):
 	output = []
 	for i in range(7):
 		outputTemp=''
-		for char in message:
+		for char in str(message).upper():
 			outString = alphabet[char][i]+"  "
+			if replace_char and replace_char != alphabet_char:
+				outString = outString.replace(alphabet_char, str(replace_char)[0])
 			outputTemp += outString
 		output.append(outputTemp)
 	return output
 
-def moving_banner(out, speed=0.1, length=50):
-	os.system('clear')
-	# start = [(i+1) for i in list(reversed(range(length)))]
-	# exit = [(i+1) for i in list(reversed(range(len(out[0]))))]
+def moving_banner():
+	args = parser.parse_args()
+	v_char = args.y
+	h_char = args.x
+	speed = 1/args.speed
+	width = min(args.width, TERM_WIDTH)
+	h_chars_all = h_char * int((width)/len(h_char))
+	width -= (2*len(v_char)) + 2 # reducing width to make room for extra characters
 
-	prefix = " "*length
-	for offset in range(length+len(out[0])):
-		os.system('clear')
+	extras = 'Banner! v{}\nPress Ctl+C to exit!'.format(__version__)
 
-		print("_"*(length+4))
-		print('|', " "*length, '|')
+	out = convert(args.message, args.c)
+	clear_scr()
 
-		for row in range(7):
-			printString= (prefix+out[row])[offset:][:length]
-			if len(printString) < length:
-				printString = printString+(" "*(length-len(printString)))
-			print('|', printString, '|')
+	prefix = " "*width
+	while True:
+		for offset in range(width+len(out[0])):
+			clear_scr()
 
-		print("o"*(length+4))
+			print(h_chars_all)
+			print(v_char, " "*width, v_char)
 
-		print('\nPress Ctl+C to exit!')
-		time.sleep(speed)
+			for row in range(7):
+				printString= (prefix+out[row])[offset:][:width]
+				if len(printString) < width:
+					printString = printString+(" "*(width-len(printString)))
+				print(v_char, printString, v_char)
+
+			print(h_chars_all)
+			if not args.quiet:
+				print(extras)
+			time.sleep(speed)
 
 
 if __name__=='__main__':
-	os.system('clear')
 	try:
-		length = sys.argv[1]
-	except: length = 50
-	message = input("Enter something - ")
-	#length = raw_input("Enter screen width(20-177) - ")
-	message = message.upper()
-	output = convert(message)
-	while True:
-		try:
-			moving_banner(output, speed=0.02, length=int(length))
-		except: break
-
-
-
-
-
-
-# print('\n')
-# for row in output:
-# 	print(row)
-# print('\n')
-
-
-
-
-
-
-
+		moving_banner()
+	except KeyboardInterrupt:
+		print("Exit!")
+	except Exception as e:
+		print(e)
 

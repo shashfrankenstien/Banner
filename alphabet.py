@@ -1,3 +1,4 @@
+alphabet_char = "*"
 alphabet = {
 
 	" ": 	["    ",
